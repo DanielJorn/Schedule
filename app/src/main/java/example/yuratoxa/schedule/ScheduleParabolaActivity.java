@@ -40,15 +40,18 @@ public class ScheduleParabolaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_parabola);
+
     }
 
 
    DrawView drawView;
 
+
     public void onClick(View view) {
         drawView = (DrawView) findViewById(R.id.customView);
         drawView.setWillNotDraw(false);
         drawView.invalidate();
+
 
 
     }
