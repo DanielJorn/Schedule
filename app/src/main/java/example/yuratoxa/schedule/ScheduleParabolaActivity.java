@@ -39,7 +39,7 @@ public class ScheduleParabolaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawView(this));
+        setContentView(R.layout.activity_schedule_parabola);
     }
 
 
