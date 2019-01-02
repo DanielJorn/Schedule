@@ -1,24 +1,21 @@
 package example.yuratoxa.schedule;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.view.Display;
 import android.view.View;
-
-import org.w3c.dom.Attr;
-
-import java.util.jar.Attributes;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class Parabola extends AppCompatActivity {
 
     View customView;
+    SeekBar seekBar;
+    boolean used = false;
+
+    float old = 0;
+    float momentive = 0;
+
 
     float division = CustomApplication.getPreferencesManager().getCount("division", 1);
     float a = CustomApplication.getPreferencesManager().getCount("a", 1) / division;
@@ -27,7 +24,9 @@ public class Parabola extends AppCompatActivity {
     float stroke = CustomApplication.getPreferencesManager().getCount("stroke", 3);
 
     float D;
-
+    Canvas canvas;
+    TextView textView;
+VerticalSeekBar verticalSeekBar;
 
 
 
@@ -37,21 +36,87 @@ public class Parabola extends AppCompatActivity {
 
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_parabola);
+ seekBar = (SeekBar) findViewById(R.id.seekBar);
+ verticalSeekBar = (VerticalSeekBar)findViewById(R.id.vSeekBar);
 
+ verticalSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+     @Override
+     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+         View drawView = (View)findViewById(R.id.customView1);
+         drawView.setY(progress - 500);
+     }
+
+     @Override
+     public void onStartTrackingTouch(SeekBar seekBar) {
+
+     }
+
+     @Override
+     public void onStopTrackingTouch(SeekBar seekBar) {
+
+     }
+ });
+
+ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+     @Override
+     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+         textView = (TextView) findViewById(R.id.textView);
+
+         View drawView = (View)findViewById(R.id.customView1);
+
+        drawView.setX(progress - 1000);
+
+
+
+         textView.setText("1 " + old + "\n 2 " + momentive + "\n прогрес   "+ progress +
+                 "\ndraw view X   " + drawView.getX() + "\nzoom  " + verticalSeekBar.getProgress());
+
+
+     }
+
+     @Override
+     public void onStartTrackingTouch(SeekBar seekBar) {
+
+     }
+
+     @Override
+     public void onStopTrackingTouch(SeekBar seekBar) {
+
+     }
+ });
     }
 
 
     DrawViewNext drawView;
 
+    public void changePosition(DrawViewNext drawViewNext,
+                               String nameOfParameter, boolean positive){
+        drawViewNext = (DrawViewNext) findViewById(R.id.customView1);
+        if(positive){
+        CustomApplication.getPreferencesManager().smallAddToCount(nameOfParameter);}
+        else {CustomApplication.getPreferencesManager().smallSubtractCount(nameOfParameter);}
+        drawViewNext.setWillNotDraw(false);
+        drawViewNext.invalidate();
+    }
 
-    public void onClick(View view) {
-        drawView = (DrawViewNext) findViewById(R.id.customView1);
-        drawView.setWillNotDraw(false);
-        drawView.invalidate();
 
-        //  p = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+
+
+    public void plusZoom(View view) {
+        changePosition(drawView, "zoom", true);
 
     }
+
+    public void minusZoom(View view){
+        changePosition(drawView, "zoom", false);
+    }
+
+
+
+
 /*
     class DrawView extends View {
 

@@ -6,13 +6,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.Display;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 
     class DrawViewNext extends View {
 
+
+
+
+
+float zoom = CustomApplication.getPreferencesManager().getCount("zoom", 1);
         float width = CustomApplication.getPreferencesManager().getCount("width", 1);
         float height = CustomApplication.getPreferencesManager().getCount("height", 1);
         float centerWidth = CustomApplication.getPreferencesManager().getCount("centerWidth", 1);
@@ -41,6 +49,8 @@ import android.view.View;
         }
 
 
+
+
         public DrawViewNext(Context context)
         {
             super(context);
@@ -57,14 +67,27 @@ import android.view.View;
         }
 
 
+
+        public void clearCanvas(Canvas canvas){
+            canvas.drawColor(Color.WHITE);
+        }
+
         @Override
         protected void onDraw(Canvas canvas) {
+
+
+            canvas.scale(CustomApplication.getPreferencesManager().getCount("zoom", 1),
+                    CustomApplication.getPreferencesManager().getCount("zoom", 1));
+
+
+    canvas.save();
             Paint p = new Paint();
 //розмір позначки
             int sizeOfTag = 10;
             //шаг одиничного одргризка
             float absoluteStep = CustomApplication.getPreferencesManager().getCount("step", 30);
 
+            p.setTextSize(20);
             p.setColor(Color.BLACK);
             p.setTextAlign(Paint.Align.CENTER);
             p.setStrokeWidth(stroke);
@@ -76,21 +99,21 @@ import android.view.View;
 
             for (float i1 = absoluteStep; i1 + centerWidth < width; i1 += absoluteStep){
                 canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
-                canvas.drawText("" + i1 / absoluteStep, centerWidth + i1, centerHeight +20, p);}
+                canvas.drawText("" + (int)i1 / (int)absoluteStep, centerWidth + i1, centerHeight +20, p);}
 
             for (float i1 = absoluteStep; i1 + centerHeight < height; i1 += absoluteStep) {
                 canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
-                canvas.drawText("" + - i1 / absoluteStep, centerWidth - 20, centerHeight + i1, p); }
+                canvas.drawText("" +(int) - i1 /(int)absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p); }
 
             for (float i1 = absoluteStep; i1 > -centerWidth; i1 -= absoluteStep){
                 if(i1 < 0){
                     canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
-                    canvas.drawText("" + i1 / absoluteStep, centerWidth + i1, centerHeight + 20, p);}}
+                    canvas.drawText("" +(int) i1 / (int)absoluteStep, centerWidth + i1, centerHeight + 20, p);}}
 
             for (float i1 = absoluteStep; i1 > -centerHeight; i1 -= absoluteStep){
                 if (i1 < 0) {
                     canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
-                    canvas.drawText("" + -i1/absoluteStep, centerWidth - 20, centerHeight + i1, p);}}
+                    canvas.drawText("" + (int)-i1/(int)absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);}}
 
             //шукає х нульове
             D = findD(a, b, c);
@@ -99,10 +122,11 @@ import android.view.View;
             p.setStrokeWidth(stroke * 2);
             canvas.drawPoint(centerWidth + x0 * absoluteStep, centerHeight - y0 * absoluteStep, p);
              p.setStrokeWidth(stroke);
-            canvas.drawText("X нульове " + x0, 100, 100, p);
-            canvas.drawText("Y нульове " + y0, 100, 150, p);
+            canvas.drawText("X нульове " + x0, 300, 300, p);
+            canvas.drawText("Y нульове " + y0, 300, 350, p);
             //рисує параболу
              p.setColor(Color.RED);
+
             for (double x = -10; x <= 10; x += 0.1){
                 double y = a * x * x + b * x + c;
                 float startX = (float) centerWidth + ((float) x * absoluteStep);
@@ -111,5 +135,9 @@ import android.view.View;
             }
 
 
+
+
         }}
+
+
 
