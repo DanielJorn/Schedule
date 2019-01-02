@@ -4,6 +4,7 @@ package example.yuratoxa.schedule;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.DrmInitData;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
@@ -64,10 +65,10 @@ public class MainActivity extends Activity {
         catch (Throwable throwable){
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
-
-        /*CustomApplication.getPreferencesManager().saveCount("a", a);
-        CustomApplication.getPreferencesManager().saveCount("b", b);
-        CustomApplication.getPreferencesManager().saveCount("c", c);*/
     }
 
+    public void goToBuildSchedule(View view) {
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        startActivity(intent);
+    }
 }
