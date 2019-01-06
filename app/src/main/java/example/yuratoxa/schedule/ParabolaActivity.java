@@ -3,11 +3,12 @@ package example.yuratoxa.schedule;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class Parabola extends AppCompatActivity {
+public class ParabolaActivity extends AppCompatActivity {
 
     SeekBar seekBar;
     TextView textView;
@@ -21,6 +22,7 @@ public class Parabola extends AppCompatActivity {
 
  seekBar = (SeekBar) findViewById(R.id.seekBar);
  verticalSeekBar = (VerticalSeekBar)findViewById(R.id.vSeekBar);
+
 
  verticalSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -76,6 +78,14 @@ public class Parabola extends AppCompatActivity {
         drawView.setScaleY(drawView.getScaleY() - 0.5f);
     }
 
+
+    public void minusCoordinatesOfTouch(View view) {
+
+    }
+
+    public void plusCoordinatesOfTouch(View view) {
+
+    }
 }
 
 

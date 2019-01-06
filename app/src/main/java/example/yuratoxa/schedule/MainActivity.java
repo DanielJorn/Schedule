@@ -4,7 +4,6 @@ package example.yuratoxa.schedule;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
-import android.media.DrmInitData;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
@@ -13,9 +12,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    EditText firstCof;
-    EditText secondCof;
-    EditText thirdCof;
+    EditText firstEditText;
+    EditText secondEditText;
+    EditText thirdEditText;
     EditText divisionNumber;
     EditText step;
     EditText setStroke;
@@ -26,9 +25,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        firstCof = (EditText) findViewById(R.id.firstCof);
-        secondCof = (EditText) findViewById(R.id.secondCof);
-        thirdCof = (EditText) findViewById(R.id.thirdCof);
+        firstEditText = (EditText) findViewById(R.id.firstCof);
+        secondEditText = (EditText) findViewById(R.id.secondCof);
+        thirdEditText = (EditText) findViewById(R.id.thirdCof);
         divisionNumber = (EditText) findViewById(R.id.divisionNumber);
         setStroke = (EditText) findViewById(R.id.setStroke);
         step = (EditText) findViewById(R.id.step);
@@ -49,12 +48,18 @@ public class MainActivity extends Activity {
 
 
     public void buildParabola(View view) {
-        Intent intent = new Intent(this, Parabola.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, ParabolaActivity.class);
+
+        float firstCof = Float.parseFloat(firstEditText.getText().toString());
+        float secondCof = Float.parseFloat(secondEditText.getText().toString());
+        float thirdCof =  Float.parseFloat(thirdEditText.getText().toString());
+
+
+        if (firstCof != 0 & secondCof != 0 & thirdCof != 0 ){
         try {
-            CustomApplication.getPreferencesManager().saveCount("a", Float.parseFloat(firstCof.getText().toString()));
-            CustomApplication.getPreferencesManager().saveCount("b", Float.parseFloat(secondCof.getText().toString()));
-            CustomApplication.getPreferencesManager().saveCount("c", Float.parseFloat(thirdCof.getText().toString()));
+            CustomApplication.getPreferencesManager().saveCount("a", firstCof);
+            CustomApplication.getPreferencesManager().saveCount("b", secondCof);
+            CustomApplication.getPreferencesManager().saveCount("c", thirdCof);
             if (!divisionNumber.getText().toString().isEmpty()){
                 CustomApplication.getPreferencesManager().saveCount("division", Float.parseFloat(divisionNumber.getText().toString()));
             }
@@ -62,9 +67,16 @@ public class MainActivity extends Activity {
             CustomApplication.getPreferencesManager().saveCount("step", Float.parseFloat(step.getText().toString()));
 
         }
+
         catch (Throwable throwable){
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+
     }
+
+
+        startActivity(intent);
+    }
+    else Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 
     public void goToBuildSchedule(View view) {

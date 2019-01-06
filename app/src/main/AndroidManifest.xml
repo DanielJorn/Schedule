@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Parabola" />
+        <activity android:name=".ParabolaActivity" />
         <activity android:name=".ScheduleActivity"></activity>
     </application>
 
