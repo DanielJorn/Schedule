@@ -50,33 +50,36 @@ public class MainActivity extends Activity {
     public void buildParabola(View view) {
         Intent intent = new Intent(this, ParabolaActivity.class);
 
-        float firstCof = Float.parseFloat(firstEditText.getText().toString());
-        float secondCof = Float.parseFloat(secondEditText.getText().toString());
-        float thirdCof =  Float.parseFloat(thirdEditText.getText().toString());
 
 
-        if (firstCof != 0 & secondCof != 0 & thirdCof != 0 ){
-        try {
-            CustomApplication.getPreferencesManager().saveCount("a", firstCof);
-            CustomApplication.getPreferencesManager().saveCount("b", secondCof);
-            CustomApplication.getPreferencesManager().saveCount("c", thirdCof);
-            if (!divisionNumber.getText().toString().isEmpty()){
-                CustomApplication.getPreferencesManager().saveCount("division", Float.parseFloat(divisionNumber.getText().toString()));
+
+
+            try {
+                float firstCof = Float.parseFloat(firstEditText.getText().toString());
+                float secondCof = Float.parseFloat(secondEditText.getText().toString());
+                float thirdCof =  Float.parseFloat(thirdEditText.getText().toString());
+                if (firstCof != 0 & secondCof != 0 & thirdCof != 0 ){
+                CustomApplication.getPreferencesManager().saveCount("a", firstCof);
+                CustomApplication.getPreferencesManager().saveCount("b", secondCof);
+                CustomApplication.getPreferencesManager().saveCount("c", thirdCof);
+                if (!divisionNumber.getText().toString().isEmpty()){
+                    CustomApplication.getPreferencesManager().saveCount("division", Float.parseFloat(divisionNumber.getText().toString()));
+                }
+                CustomApplication.getPreferencesManager().saveCount("stroke", Float.parseFloat(setStroke.getText().toString()));
+                CustomApplication.getPreferencesManager().saveCount("step", Float.parseFloat(step.getText().toString()));
+
             }
-            CustomApplication.getPreferencesManager().saveCount("stroke", Float.parseFloat(setStroke.getText().toString()));
-            CustomApplication.getPreferencesManager().saveCount("step", Float.parseFloat(step.getText().toString()));
+                else Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
 
+
+            }
+            catch (Throwable throwable){
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+
+
+            startActivity(intent);
         }
 
-        catch (Throwable throwable){
-            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-
-    }
-
-
-        startActivity(intent);
-    }
-    else Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 
     public void goToBuildSchedule(View view) {
