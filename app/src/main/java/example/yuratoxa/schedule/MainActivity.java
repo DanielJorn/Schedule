@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -16,21 +17,23 @@ public class MainActivity extends Activity {
     EditText secondEditText;
     EditText thirdEditText;
     EditText divisionNumber;
-    EditText step;
     EditText setStroke;
     String error = "Введіть данні";
+    TextView equation;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         firstEditText = (EditText) findViewById(R.id.firstCof);
         secondEditText = (EditText) findViewById(R.id.secondCof);
         thirdEditText = (EditText) findViewById(R.id.thirdCof);
         divisionNumber = (EditText) findViewById(R.id.divisionNumber);
         setStroke = (EditText) findViewById(R.id.setStroke);
-        step = (EditText) findViewById(R.id.step);
+        equation = (TextView)findViewById(R.id.equation);
 
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -40,6 +43,7 @@ public class MainActivity extends Activity {
         float height = size.y;
         float centerWidth = size.x/2;
         float centerHeight = size.y/2;
+
         CustomApplication.getPreferencesManager().saveCount("width", width);
         CustomApplication.getPreferencesManager().saveCount("height", height);
         CustomApplication.getPreferencesManager().saveCount("centerWidth", centerWidth);
@@ -49,7 +53,7 @@ public class MainActivity extends Activity {
 
     public void buildParabola(View view) {
         Intent intent = new Intent(this, ParabolaActivity.class);
-
+        startActivity(intent);
 
 
 
@@ -66,7 +70,6 @@ public class MainActivity extends Activity {
                     CustomApplication.getPreferencesManager().saveCount("division", Float.parseFloat(divisionNumber.getText().toString()));
                 }
                 CustomApplication.getPreferencesManager().saveCount("stroke", Float.parseFloat(setStroke.getText().toString()));
-                CustomApplication.getPreferencesManager().saveCount("step", Float.parseFloat(step.getText().toString()));
 
             }
                 else Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
@@ -77,13 +80,52 @@ public class MainActivity extends Activity {
                 Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
 
 
-            startActivity(intent);
+
         }
 
     }
 
+
+
+
+
+
     public void goToBuildSchedule(View view) {
         Intent intent = new Intent(this, ScheduleActivity.class);
         startActivity(intent);
+    }
+
+    public void addChar(char symbol) {
+        String equationString = (String) equation.getText();
+
+
+        if (symbol == 'x' & !equationString.endsWith("x")
+                | symbol != 'x' & equationString.endsWith("x")
+                |(equationString.endsWith("=") & (symbol == '+' | symbol == '-'))) {
+            equation.setText(equationString + symbol); }
+
+            }
+
+    public void addPlus(View view){
+       addChar('+');
+    }
+    public void addMinus(View view){
+        addChar('-');
+    }
+    public void addMult(View view){
+        addChar('*');
+    }
+    public void addDiv(View view){
+        addChar('/');
+    }
+    public void addX (View view){
+        addChar('x');
+    }
+
+    public void removeLast(View view) {
+        String equationString = (String) equation.getText();
+        if (!equationString.endsWith("=")){
+        equationString = equationString.substring(0, equationString.length() - 1);
+        equation.setText(equationString);}
     }
 }

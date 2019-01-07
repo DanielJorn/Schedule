@@ -15,7 +15,7 @@ public class BuildingSchedule {
     float centerHeight = CustomApplication.getPreferencesManager().getCount("centerHeight", 1);
     float stroke = CustomApplication.getPreferencesManager().getCount("stroke", 3);
     int sizeOfTag = 10;
-    float absoluteStep = CustomApplication.getPreferencesManager().getCount("step", 30);
+    float absoluteStep = 30;
 
     float division = CustomApplication.getPreferencesManager().getCount("division", 1);
     float a = CustomApplication.getPreferencesManager().getCount("a", 1) / division;

@@ -79,13 +79,6 @@ public class ParabolaActivity extends AppCompatActivity {
     }
 
 
-    public void minusCoordinatesOfTouch(View view) {
-
-    }
-
-    public void plusCoordinatesOfTouch(View view) {
-
-    }
 }
 
 
