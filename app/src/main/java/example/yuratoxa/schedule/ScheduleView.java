@@ -27,8 +27,10 @@ public class ScheduleView extends View {
     protected void onDraw(Canvas canvas){
         Paint p = new Paint();
         BuildingSchedule buildingSchedule = new BuildingSchedule();
+        String equation = CustomApplication.getPreferencesManager().getStringFromPrefs("equation");
 
         buildingSchedule.buildCoordinateSystem(canvas, p);
+        buildingSchedule.buildSchedule(equation,canvas, p);
     }
 
 }

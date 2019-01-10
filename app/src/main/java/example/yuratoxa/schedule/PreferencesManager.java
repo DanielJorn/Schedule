@@ -37,4 +37,12 @@ public class PreferencesManager {
         editor.putFloat(name, getCount(name, 0) - 0.1f);
         editor.apply();
     }
+    public void saveStringInPrefs (String key, String value){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+    public String  getStringFromPrefs (String key){
+        return sharedPreferences.getString(key, "0");
+    }
 }

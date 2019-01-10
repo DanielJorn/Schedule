@@ -13,14 +13,31 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+
+    public boolean isOperator(char c){
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '=';
+    }
+    public boolean isPlusOrMinus(char c){
+        return c == '-' || c == '+';
+    }
+    public boolean endsWithOperator(String string){
+        return string.endsWith("+") || string.endsWith("-") || string.endsWith("*") || string.endsWith("/");
+    }
+    public boolean endsWithBow (String string){
+        return string.endsWith(")") || string.endsWith("(");
+    }
+    public boolean endsWithNumber (String string){
+        return !endsWithOperator(string) & !string.endsWith("(") || !string.endsWith(")");
+    }
+
     EditText firstEditText;
     EditText secondEditText;
     EditText thirdEditText;
     EditText divisionNumber;
     EditText setStroke;
+    EditText setNumber;
     String error = "Введіть данні";
     TextView equation;
-
 
 
     @Override
@@ -34,7 +51,7 @@ public class MainActivity extends Activity {
         divisionNumber = (EditText) findViewById(R.id.divisionNumber);
         setStroke = (EditText) findViewById(R.id.setStroke);
         equation = (TextView)findViewById(R.id.equation);
-
+        setNumber = (EditText)findViewById(R.id.setNumber);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -85,12 +102,10 @@ public class MainActivity extends Activity {
 
     }
 
-
-
-
-
-
     public void goToBuildSchedule(View view) {
+        String equationString = equation.getText().toString();
+        CustomApplication.getPreferencesManager().saveStringInPrefs("equation", equationString);
+
         Intent intent = new Intent(this, ScheduleActivity.class);
         startActivity(intent);
     }
@@ -98,20 +113,27 @@ public class MainActivity extends Activity {
     public void addChar(char symbol) {
         String equationString = (String) equation.getText();
 
-
-        if (symbol == 'x' & !equationString.endsWith("x")
-                | symbol != 'x' & equationString.endsWith("x")
-                |(equationString.endsWith("=") & (symbol == '+' | symbol == '-'))) {
-            equation.setText(equationString + symbol); }
-
+        if (isOperator(symbol) & (!endsWithOperator(equationString) & !equationString.endsWith("="))
+                || isPlusOrMinus(symbol) & equationString.endsWith("=")
+                || symbol == '(' & endsWithOperator(equationString)
+                || (symbol == ')' & (!endsWithOperator(equationString) & !endsWithBow(equationString)))
+                || (symbol == 'x' & (endsWithOperator(equationString) | equationString.endsWith("="))))
+            equation.setText(equationString + symbol);
+       /* else if (isPlusOrMinus(symbol) & equationString.endsWith("="))
+            equation.setText(equationString + symbol);
+        else if  (symbol == '(' & endsWithOperator(equationString))
+            equation.setText(equationString + symbol);
+        else if (symbol == ')' & (!endsWithOperator(equationString) & !endsWithBow(equationString)))
+            equation.setText(equationString + symbol);
+        else if (symbol == 'x' & (endsWithOperator(equationString) | equationString.endsWith("=")))
+            equation.setText(equationString + symbol);*/
             }
+
 
     public void addPlus(View view){
        addChar('+');
     }
-    public void addMinus(View view){
-        addChar('-');
-    }
+    public void addMinus(View view){addChar('-'); }
     public void addMult(View view){
         addChar('*');
     }
@@ -121,11 +143,24 @@ public class MainActivity extends Activity {
     public void addX (View view){
         addChar('x');
     }
+    public void addOpeningBow(View view) {
+        addChar('('); }
+    public void addClosingBow(View view) {
+        addChar(')'); }
+
 
     public void removeLast(View view) {
         String equationString = (String) equation.getText();
         if (!equationString.endsWith("=")){
-        equationString = equationString.substring(0, equationString.length() - 1);
+            equationString = equationString.substring(0, equationString.length() - 1);
         equation.setText(equationString);}
     }
+
+    public void setNumber(View view) {
+        String equationString = (String) equation.getText();
+        if (!equationString.endsWith("x") & !equationString.endsWith(")"))
+        equation.setText(equation.getText() + setNumber.getText().toString());
+    }
+
+
 }
