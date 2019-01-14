@@ -4,9 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class ScheduleView extends View {
+
+    TranslatingView trView = new TranslatingView();
+    PointView pView;
+
 
     public ScheduleView(Context context)
     {
@@ -29,8 +34,12 @@ public class ScheduleView extends View {
         BuildingSchedule buildingSchedule = new BuildingSchedule();
         String equation = CustomApplication.getPreferencesManager().getStringFromPrefs("equation");
 
+
+
         buildingSchedule.buildCoordinateSystem(canvas, p);
         buildingSchedule.buildSchedule(equation,canvas, p);
     }
+
+
 
 }

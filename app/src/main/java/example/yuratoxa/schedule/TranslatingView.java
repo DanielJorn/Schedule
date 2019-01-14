@@ -1,9 +1,13 @@
 package example.yuratoxa.schedule;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class TranslatingView {
+
+    float dX, dY;
 
     public void changeZoom (View view, boolean bigWay){
         if (bigWay){
@@ -14,39 +18,38 @@ public class TranslatingView {
          view.setScaleY(view.getScaleY() - 0.5f);}
     }
 
-    public void translateView (SeekBar seekBar, final View translatingView, boolean vertical) {
 
-        if (!vertical) {
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    translatingView.setX((progress - seekBar.getMax() / 2));
-                }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
+    public boolean onTouch(View drawView, MotionEvent event, View point) {
 
-                }
+        switch (event.getAction()) {
 
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
+            case MotionEvent.ACTION_DOWN:
 
-                }
-            });
-        } else seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                translatingView.setY((progress - seekBar.getMax() / 2));
-            }
+                dX = drawView.getX() - event.getRawX();
+                dY = drawView.getY() - event.getRawY();
+                break;
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            case MotionEvent.ACTION_MOVE:
 
-            }
+                drawView.animate()
+                        .x(event.getRawX() + dX)
+                        .y(event.getRawY() + dY)
+                        .setDuration(0)
+                        .start();
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+                point.animate()
+                        .x(event.getRawX() + dX)
+                        .y(event.getRawY() + dY)
+                        .setDuration(0)
+                        .start();
 
-            }
-        });
-    }}
+
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+  }

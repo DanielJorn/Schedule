@@ -6,15 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ScheduleActivity">
 
-    <example.yuratoxa.schedule.ScheduleView
-        android:id="@+id/customView1"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/seekBar"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:text="X"
+        android:textColor="@color/colorViolet"
+        app:layout_constraintBottom_toTopOf="@+id/editArgument"
+        app:layout_constraintEnd_toStartOf="@+id/editArgument" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="minusZoom"
+        android:text="-"
+        android:textColor="@android:color/black"
+        android:textSize="60sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
         android:id="@+id/button3"
@@ -30,37 +44,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button5"
-        style="@android:style/Widget.DeviceDefault.Button.Borderless"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editArgument"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        android:onClick="minusZoom"
-        android:text="-"
-        android:textColor="@android:color/black"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:max="4000"
-        android:progress="2000"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="numberSigned|numberDecimal"
+        android:maxLength="5"
+        android:textColor="@color/colorViolet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <example.yuratoxa.schedule.VerticalSeekBar
-        android:id="@+id/vSeekBar"
+    <example.yuratoxa.schedule.ScheduleView
+        android:id="@+id/customView1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:max="4000"
-        android:progress="2000"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <example.yuratoxa.schedule.PointView
+        android:id="@+id/pointView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/textCoordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/editArgument"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView" />
+
 
 </android.support.constraint.ConstraintLayout>

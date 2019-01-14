@@ -63,7 +63,7 @@ public class PolishNotation {
     public static float eval(String s, float x) {
         LinkedList<Float> st = new LinkedList<Float>(); // сюда наваливают цифры
         LinkedList<Character> op = new LinkedList<Character>(); // сюда опрераторы и st и op в порядке поступления
-        for (int i = 5; i < s.length(); i++) { // парсим строку с выражением и вычисляем
+        for (int i = 0; i < s.length(); i++) { // парсим строку с выражением и вычисляем
             char c = s.charAt(i);
             if (isDelim(c))
                 continue;

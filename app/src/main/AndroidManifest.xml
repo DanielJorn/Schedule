@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ParabolaActivity" />
-        <activity android:name=".ScheduleActivity"></activity>
+        <activity android:name=".ScheduleActivity" />
     </application>
 
 </manifest>

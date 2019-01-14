@@ -3,8 +3,11 @@ package example.yuratoxa.schedule;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class BuildingSchedule {
@@ -35,11 +38,10 @@ public class BuildingSchedule {
         if(isX)
             return centerWidth + (coordinate * absoluteStep);
         else
-            return (float) centerHeight + (-coordinate * absoluteStep);
+            return centerHeight + (-coordinate * absoluteStep);
     }
 
     public void buildPoints(float startX, float startY, Canvas canvas, Paint p){
-        if (startY > 0 & startY < height & startX > 0 & startX < width) {
 
             canvas.drawPoint(startX, startY, p);
             indexOfArray += 1;
@@ -52,8 +54,6 @@ public class BuildingSchedule {
                 canvas.drawLines(points, offset, 4, p);
                 offset += 2;
             }
-
-        }
     }
 
     public float square (float a){
@@ -117,7 +117,7 @@ public class BuildingSchedule {
 
         for (float i1 = absoluteStep; i1 + centerHeight < height; i1 += absoluteStep) { //під оссю іксів
             canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
-            canvas.drawText("" + (int) -i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
+            canvas.drawText("-" + (int) i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
             canvas.drawLine(width, centerHeight + i1, 0, centerHeight + i1, paintForCellular);
         }
 
@@ -157,7 +157,7 @@ public class BuildingSchedule {
     public void buildSchedule(String equation, Canvas canvas, Paint p) {
         p.setColor(Color.RED);
         p.setStrokeWidth(stroke / 2);
-        for (float x = -10; x <= 10; x += 0.1) {
+        for (float x = -10; x <= 10.1; x += 0.1) {
             float y = PolishNotation.eval(equation, x);
            float startX = findPointCoordinates(x, true);
            float startY =  findPointCoordinates(y, false);
@@ -165,7 +165,52 @@ public class BuildingSchedule {
         }
     }
 
+    public void buildPoint(String equation, Canvas canvas, Paint p, float x){
+        p.setColor(Color.RED);
+        p.setStrokeWidth(stroke * 2f);
+        p.setAntiAlias(true);
+        p.setTextSize(20);
+        float y = PolishNotation.eval(equation, x);
+        float startX = findPointCoordinates(x, true);
+        float startY =  findPointCoordinates(y, false);
+        canvas.drawPoint(startX, startY, p);
+        String coordinates = "(" + x + ";" + y + ")";
+        CustomApplication.getPreferencesManager().saveCount("x", x);
+        canvas.drawText(coordinates, startX + 10, startY - 10, p);
+
+    }
+
+    public void seeArgument(final EditText editText, final PointView pView, final TextView textCoordinates, final String equation){
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String argument = editText.getText().toString();
+                if (!argument.isEmpty() & !argument.endsWith(".")) {
+                    float x = Float.parseFloat(argument);
+                    CustomApplication.getPreferencesManager().saveCount("x", x);
+                    float y = PolishNotation.eval(equation, x);
+                    String coordinates = "(" + x + ";" + y + ")";
+                    textCoordinates.setText(coordinates);
+                    pView.invalidate();
+
+                }
+                }
+            });
+        }
+    }
 
 
 
-}
