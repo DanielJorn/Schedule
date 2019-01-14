@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-
     public boolean isOperator(char c){
         return c == '+' || c == '-' || c == '*' || c == '/' || c == '=';
     }
@@ -29,7 +28,7 @@ public class MainActivity extends Activity {
     }
 
 
-    String error = "Введіть данні";
+    String error = "Вибачте, щось не так введено";
     TextView equation;
     EditText editEquation;
 
@@ -54,6 +53,8 @@ public class MainActivity extends Activity {
         CustomApplication.getPreferencesManager().saveCount("height", height);
         CustomApplication.getPreferencesManager().saveCount("centerWidth", centerWidth);
         CustomApplication.getPreferencesManager().saveCount("centerHeight", centerHeight);
+
+
     }
 
 
@@ -64,21 +65,20 @@ public class MainActivity extends Activity {
         CustomApplication.getPreferencesManager().saveStringInPrefs("equation", equationString);
 
         Intent intent = new Intent(this, ScheduleActivity.class);
-        if(!equationString.endsWith("(") | !endsWithOperator(equationString))
+        if(!equationString.endsWith("(") && !endsWithOperator(equationString) && !equationString.isEmpty())
             startActivity(intent);
     }
 
-    public void addChar(char symbol) {
-        String equationString = (String) editEquation.getText().toString();
+    public void addChar(char symbol, EditText editText) {
+        String equationString = (String) editText.getText().toString();
 
-        if (isOperator(symbol) & (!endsWithOperator(equationString) & !equationString.endsWith("="))
-                || isPlusOrMinus(symbol) & equationString.endsWith("=")
-                || symbol == '(' & (endsWithOperator(equationString) || equationString.isEmpty())
-                || (symbol == ')' & (!endsWithOperator(equationString) & !endsWithBow(equationString)))
-                || (symbol == 'x' & (endsWithOperator(equationString) | equationString.isEmpty()))) {
-            editEquation.setText(equationString + symbol);
-            editEquation.setSelection(equationString.length() + 1);
-        }
+            int cursorIndex = editText.getSelectionStart();
+            int nextIndex = cursorIndex + 1;
+
+            String rightPart = equationString.substring(cursorIndex, equationString.length());
+            String leftPart = equationString.substring(0, cursorIndex);
+            editText.setText(leftPart + symbol + rightPart);
+            editText.setSelection(nextIndex);
 
 
             }
@@ -87,22 +87,22 @@ public class MainActivity extends Activity {
 
 
     public void addPlus(View view){
-       addChar('+');
+       addChar('+', editEquation);
     }
-    public void addMinus(View view){addChar('-'); }
+    public void addMinus(View view){addChar('-', editEquation); }
     public void addMult(View view){
-        addChar('*');
+        addChar('*', editEquation);
     }
     public void addDiv(View view){
-        addChar('/');
+        addChar('/', editEquation);
     }
     public void addX (View view){
-        addChar('x');
+        addChar('x', editEquation);
     }
     public void addOpeningBow(View view) {
-        addChar('('); }
+        addChar('(', editEquation); }
     public void addClosingBow(View view) {
-        addChar(')'); }
+        addChar(')', editEquation); }
 
 
 }

@@ -11,10 +11,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
     View drawView;
     TranslatingView trView;
-    EditText editArgument;
+    EditText editX;
     PointView pView;
     BuildingSchedule buildingSchedule;
-    TextView textCoordinates;
+    TextView textX;
 
     String equation;
 
@@ -26,15 +26,15 @@ public class ScheduleActivity extends AppCompatActivity {
         drawView = (View)findViewById(R.id.customView1);
         trView = new TranslatingView();
 
-        editArgument = (EditText)findViewById(R.id.editArgument);
+        editX = (EditText)findViewById(R.id.editX);
         pView = (PointView)findViewById(R.id.pointView);
-        textCoordinates = (TextView) findViewById(R.id.textCoordinates);
+        textX = (TextView) findViewById(R.id.textX);
 
         buildingSchedule = new BuildingSchedule();
 
         equation = CustomApplication.getPreferencesManager().getStringFromPrefs("equation");
 
-        buildingSchedule.seeArgument(editArgument, pView, textCoordinates, equation);
+        buildingSchedule.seeArgument(editX, pView, textX, equation);
 
     }
 
