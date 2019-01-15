@@ -34,10 +34,9 @@ public class ScheduleView extends View {
         BuildingSchedule buildingSchedule = new BuildingSchedule();
         String equation = CustomApplication.getPreferencesManager().getStringFromPrefs("equation");
 
-
-
-        buildingSchedule.buildCoordinateSystem(canvas, p);
+        buildingSchedule.buildCoordinateSystem(canvas, p, this);
         buildingSchedule.buildSchedule(equation,canvas, p);
+
     }
 
 

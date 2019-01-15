@@ -59,7 +59,6 @@ public class MainActivity extends Activity {
 
 
 
-
     public void goToBuildSchedule(View view) {
         String equationString = editEquation.getText().toString();
         CustomApplication.getPreferencesManager().saveStringInPrefs("equation", equationString);
@@ -68,21 +67,6 @@ public class MainActivity extends Activity {
         if(!equationString.endsWith("(") && !endsWithOperator(equationString) && !equationString.isEmpty())
             startActivity(intent);
     }
-
-    public void addChar(char symbol, EditText editText) {
-        String equationString = (String) editText.getText().toString();
-
-            int cursorIndex = editText.getSelectionStart();
-            int nextIndex = cursorIndex + 1;
-
-            String rightPart = equationString.substring(cursorIndex, equationString.length());
-            String leftPart = equationString.substring(0, cursorIndex);
-            editText.setText(leftPart + symbol + rightPart);
-            editText.setSelection(nextIndex);
-
-
-            }
-
 
 
 
@@ -105,4 +89,18 @@ public class MainActivity extends Activity {
         addChar(')', editEquation); }
 
 
+
+    public void addChar(char symbol, EditText editText) {
+        String equationString = (String) editText.getText().toString();
+
+        int cursorIndex = editText.getSelectionStart();
+        int nextIndex = cursorIndex + 1;
+
+        String rightPart = equationString.substring(cursorIndex, equationString.length());
+        String leftPart = equationString.substring(0, cursorIndex);
+        editText.setText(leftPart + symbol + rightPart);
+        editText.setSelection(nextIndex);
+
+
+    }
 }

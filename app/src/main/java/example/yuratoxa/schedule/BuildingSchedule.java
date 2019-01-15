@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -84,12 +85,14 @@ public class BuildingSchedule {
 
     }
 
-    public void buildCoordinateSystem(Canvas canvas, Paint p) {
+    public void buildCoordinateSystem(Canvas canvas, Paint p, View view) {
 
 
        Paint paintForCellular = new Paint(Paint.ANTI_ALIAS_FLAG);
        paintForCellular.setStrokeWidth(1.5f);
        paintForCellular.setColor(Color.BLUE);
+
+
 
         p.setTextSize(20);
         p.setColor(Color.BLACK);
@@ -101,13 +104,13 @@ public class BuildingSchedule {
 
 //рисує систему координат
 
-        for (float i1 = absoluteStep; i1 + centerWidth < width; i1 += absoluteStep) {//справа від осі ігриків
+        for (float i1 = absoluteStep; i1 + centerWidth < width * 2; i1 += absoluteStep) {//справа від осі ігриків
             canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
             canvas.drawLine(centerWidth + i1, height, centerWidth + i1, 0, paintForCellular);
             canvas.drawText("" + (int) i1 / (int) absoluteStep, centerWidth + i1, centerHeight + 20, p);
         }
 
-        for (float i1 = absoluteStep; i1 > -centerWidth; i1 -= absoluteStep) {//зліва від осі ігриків
+        for (float i1 = absoluteStep; i1 > -centerWidth  * 2; i1 -= absoluteStep) {//зліва від осі ігриків
             if (i1 < 0) {
                 canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
                 canvas.drawText("" + (int) i1 / (int) absoluteStep, centerWidth + i1, centerHeight + 20, p);
@@ -115,20 +118,22 @@ public class BuildingSchedule {
             }
         }
 
-        for (float i1 = absoluteStep; i1 + centerHeight < height; i1 += absoluteStep) { //під оссю іксів
+        for (float i1 = absoluteStep; i1 + centerHeight < height * 2; i1 += absoluteStep) { //під оссю іксів
             canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
             canvas.drawText("-" + (int) i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
             canvas.drawLine(width, centerHeight + i1, 0, centerHeight + i1, paintForCellular);
         }
 
 
-        for (float i1 = absoluteStep; i1 > -centerHeight; i1 -= absoluteStep) {//над віссю іксів
+        for (float i1 = absoluteStep; i1 > -centerHeight * 2; i1 -= absoluteStep) {//над віссю іксів
             if (i1 < 0) {
                 canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
                 canvas.drawText("" + (int) -i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
                 canvas.drawLine(width, centerHeight + i1, 0, centerHeight + i1, paintForCellular);
             }
         }
+
+
 
     }
 
