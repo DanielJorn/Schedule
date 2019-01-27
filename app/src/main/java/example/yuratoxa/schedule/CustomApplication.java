@@ -6,6 +6,7 @@ public class CustomApplication extends Application {
 
     private static PreferencesManager preferencesManager;
 
+
     public static PreferencesManager getPreferencesManager() {
         return preferencesManager;
     }
@@ -15,6 +16,6 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         preferencesManager = new PreferencesManager(this);
-
     }
+
 }

@@ -2,22 +2,20 @@ package example.yuratoxa.schedule;
 
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 public class TranslatingView {
 
     float dX, dY;
 
-    public void changeZoom (View view, boolean bigWay){
-        if (bigWay){
+    public void changeZoom(View view, boolean bigWay) {
+        if (bigWay) {
             view.setScaleX(view.getScaleX() + 0.5f);
             view.setScaleY(view.getScaleY() + 0.5f);
+        } else {
+            view.setScaleX(view.getScaleX() - 0.5f);
+            view.setScaleY(view.getScaleY() - 0.5f);
         }
-        else {view.setScaleX(view.getScaleX() - 0.5f);
-         view.setScaleY(view.getScaleY() - 0.5f);}
     }
-
 
 
     public boolean onTouch(View drawView, MotionEvent event, View point) {
@@ -52,4 +50,4 @@ public class TranslatingView {
         return true;
     }
 
-  }
+}

@@ -6,111 +6,133 @@ import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class BuildingSchedule {
 
-    float width = CustomApplication.getPreferencesManager().getCount("width", 1);
-    float height = CustomApplication.getPreferencesManager().getCount("height", 1);
-    float centerWidth = CustomApplication.getPreferencesManager().getCount("centerWidth", 1);
-    float centerHeight = CustomApplication.getPreferencesManager().getCount("centerHeight", 1);
-    float stroke = CustomApplication.getPreferencesManager().getCount("stroke", 3);
+
+    float pointX;
+    float pointY;
+    float y;
+    final String TAG = "buildGraph";
+
+    long endTime, time;
+    long startTime = System.currentTimeMillis();
+
+    float width = CustomApplication.getPreferencesManager().getCount("width", 480);
+    float height = CustomApplication.getPreferencesManager().getCount("height", 720);
+    float centerWidth = width / 2;
+    float centerHeight = height / 2;
+    float stroke = 3;
     int sizeOfTag = 10;
-    float absoluteStep = 30;
-
-    float division = CustomApplication.getPreferencesManager().getCount("division", 1);
-    float a = CustomApplication.getPreferencesManager().getCount("a", 1) / division;
-    float b = CustomApplication.getPreferencesManager().getCount("b", 0);
-    float c = CustomApplication.getPreferencesManager().getCount("c", 0);
-    float D;
-    int indexOfArray = -1;
-    int countOfIterations = 0;
-    int offset = 0;
+    int absoluteStep = (int) width / 11;
+    int index = 0;
+    float[] coordinates = new float[4];
 
 
+    public void buildGraph(String equation, Canvas canvas, Paint p, float offsetX, float offsetY) {
 
-    float points [] = new float[1000];
+        buildCoordinateSystem(canvas, p, new Paint(), offsetX, offsetY);
+        float centerWidth = (width / 2) + offsetX;
+        float centerHeight = (height / 2) + offsetY;
+        Log.d(TAG, "buildGraph: centerWidth " + centerWidth);
+
+        p.setAntiAlias(true);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.RED);
+        p.setStrokeWidth(stroke);
 
 
-    public float findPointCoordinates (float coordinate, boolean isX){
-        if(isX)
+        for (float x = -5; x <= 5; x += 0.1) {
+
+            if (index != 4) {
+                y = PolishNotation.eval(equation, x);
+
+                pointX =  centerWidth + (x * absoluteStep);
+                pointY = centerHeight + (-y * absoluteStep);
+
+                coordinates[index] = pointX;
+                ++index;
+                coordinates[index] = pointY;
+                ++index;
+                canvas.drawPoint(pointX, pointY, p);
+            } else {
+                canvas.drawLines(coordinates, p);
+                coordinates[0] = coordinates[2];
+                coordinates[1] = coordinates[3];
+                index = 2;
+
+                y = PolishNotation.eval(equation, x);
+
+                pointX = findPointCoordinates(x, true);
+                pointY = findPointCoordinates(y, false);
+
+                coordinates[index] = pointX;
+                ++index;
+                coordinates[index] = pointY;
+                ++index;
+                canvas.drawPoint(pointX, pointY, p);
+            }
+        }
+        endTime = System.currentTimeMillis();
+        time = endTime - startTime;
+        Log.d("TIME", "" + time);
+        p.setStrokeWidth(1);
+        canvas.drawText("" + time, 100, 100, p);
+        p.reset();
+    }
+
+
+    public float findPointCoordinates(float coordinate, boolean isX) {
+        if (isX)
             return centerWidth + (coordinate * absoluteStep);
         else
             return centerHeight + (-coordinate * absoluteStep);
     }
 
-    public void buildPoints(float startX, float startY, Canvas canvas, Paint p){
 
-            canvas.drawPoint(startX, startY, p);
-            indexOfArray += 1;
-            points[indexOfArray] = startX;
-            indexOfArray += 1;
-            points[indexOfArray] = startY;
-            countOfIterations += 1;
-
-            if (countOfIterations >= 2){
-                canvas.drawLines(points, offset, 4, p);
-                offset += 2;
-            }
+    public void buildPoint(String equation, Canvas canvas, Paint p, float x) {
+        p.setColor(Color.RED);
+        p.setStrokeWidth(stroke * 2f);
+        p.setAntiAlias(true);
+        p.setTextSize(20);
+        float y = PolishNotation.eval(equation, x);
+        float startX = findPointCoordinates(x, true);
+        float startY = findPointCoordinates(y, false);
+        canvas.drawPoint(startX, startY, p);
+        String coordinates = "(" + x + ";" + y + ")";
+        CustomApplication.getPreferencesManager().saveCount("x", x);
+        canvas.drawText(coordinates, startX + 10, startY - 10, p);
     }
 
-    public float square (float a){
-        return a * a;
-    }
 
-    public float findD (float a, float b, float c) {
-        float first = square(b);
-        float sec = 4 * a * c;
-        return first - sec;
-    }
+    public void buildCoordinateSystem(Canvas canvas, Paint p, Paint paintForCellular, float offsetX, float offsetY) {
 
-    public void findStartOfParabola(Canvas canvas, Paint p) {
-        //шукає х нульове
-        float D;
-
-        D = findD(a, b, c);
-
-        float x0 = -b / (2 * a);
-        float y0 = -D / (4 * a);
-        p.setStrokeWidth(stroke);
-        p.setColor(Color.BLUE);
-        canvas.drawPoint(centerWidth +x0 *absoluteStep,centerHeight -y0 *absoluteStep,p);
-        p.setStrokeWidth(stroke);
-        p.setColor(Color.BLACK);
-        canvas.drawText("X нульове "+x0,100,100,p);
-        canvas.drawText("Y нульове "+y0,100,150,p);
-
-    }
-
-    public void buildCoordinateSystem(Canvas canvas, Paint p, View view) {
-
-
-       Paint paintForCellular = new Paint(Paint.ANTI_ALIAS_FLAG);
-       paintForCellular.setStrokeWidth(1.5f);
-       paintForCellular.setColor(Color.BLUE);
-
-
-
+        canvas.drawColor(Color.WHITE);
         p.setTextSize(20);
         p.setColor(Color.BLACK);
         p.setTextAlign(Paint.Align.CENTER);
         p.setStrokeWidth(stroke);
-        canvas.drawPoint(centerWidth, centerHeight, p);
+
+        centerWidth += offsetX;
+        centerHeight += offsetY;
+
+        paintForCellular.setStrokeWidth(1.5f);
+        paintForCellular.setColor(Color.BLUE);
+
         canvas.drawLine(0, centerHeight, width, centerHeight, p);
         canvas.drawLine(centerWidth, 0, centerWidth, height, p);
 
 //рисує систему координат
 
-        for (float i1 = absoluteStep; i1 + centerWidth < width * 2; i1 += absoluteStep) {//справа від осі ігриків
+        for (float i1 = absoluteStep; i1 + centerWidth < width; i1 += absoluteStep) {//справа від осі ігриків
             canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
             canvas.drawLine(centerWidth + i1, height, centerWidth + i1, 0, paintForCellular);
             canvas.drawText("" + (int) i1 / (int) absoluteStep, centerWidth + i1, centerHeight + 20, p);
         }
 
-        for (float i1 = absoluteStep; i1 > -centerWidth  * 2; i1 -= absoluteStep) {//зліва від осі ігриків
+        for (float i1 = absoluteStep; i1 > -centerWidth; i1 -= absoluteStep) {//зліва від осі ігриків
             if (i1 < 0) {
                 canvas.drawLine(centerWidth + i1, centerHeight, centerWidth + i1, centerHeight - sizeOfTag, p);
                 canvas.drawText("" + (int) i1 / (int) absoluteStep, centerWidth + i1, centerHeight + 20, p);
@@ -118,74 +140,25 @@ public class BuildingSchedule {
             }
         }
 
-        for (float i1 = absoluteStep; i1 + centerHeight < height * 2; i1 += absoluteStep) { //під оссю іксів
+        for (float i1 = absoluteStep; i1 + centerHeight < height; i1 += absoluteStep) { //під оссю іксів
             canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
             canvas.drawText("-" + (int) i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
             canvas.drawLine(width, centerHeight + i1, 0, centerHeight + i1, paintForCellular);
         }
 
 
-        for (float i1 = absoluteStep; i1 > -centerHeight * 2; i1 -= absoluteStep) {//над віссю іксів
+        for (float i1 = absoluteStep; i1 > -centerHeight; i1 -= absoluteStep) {//над віссю іксів
             if (i1 < 0) {
                 canvas.drawLine(centerWidth, centerHeight + i1, centerWidth + sizeOfTag, centerHeight + i1, p);
                 canvas.drawText("" + (int) -i1 / (int) absoluteStep, centerWidth - 20, centerHeight + i1 + 6, p);
                 canvas.drawLine(width, centerHeight + i1, 0, centerHeight + i1, paintForCellular);
             }
         }
-
-
-
+        p.reset();
     }
 
 
-//строє параболу
-
-    public void buildParabola(Canvas canvas, Paint p){
-        findStartOfParabola(canvas, p); //шукаю початок параболи
-        p.setColor(Color.RED);
-        p.setStrokeWidth(stroke/2);
-        float x0 = -b / (2 * a);
-        for (float x = x0 - 10; x <=10 + x0; x += 0.1) {
-
-            float y = a * x * x + b * x + c;
-            float startX = findPointCoordinates(x, true);
-            float startY = findPointCoordinates(y, false);
-
-            buildPoints(startX, startY, canvas, p);
-
-            }
-
-
-    }
-
-
-    public void buildSchedule(String equation, Canvas canvas, Paint p) {
-        p.setColor(Color.RED);
-        p.setStrokeWidth(stroke / 2);
-        for (float x = -10; x <= 10.1; x += 0.1) {
-            float y = PolishNotation.eval(equation, x);
-           float startX = findPointCoordinates(x, true);
-           float startY =  findPointCoordinates(y, false);
-           buildPoints(startX, startY, canvas, p);
-        }
-    }
-
-    public void buildPoint(String equation, Canvas canvas, Paint p, float x){
-        p.setColor(Color.RED);
-        p.setStrokeWidth(stroke * 2f);
-        p.setAntiAlias(true);
-        p.setTextSize(20);
-        float y = PolishNotation.eval(equation, x);
-        float startX = findPointCoordinates(x, true);
-        float startY =  findPointCoordinates(y, false);
-        canvas.drawPoint(startX, startY, p);
-        String coordinates = "(" + x + ";" + y + ")";
-        CustomApplication.getPreferencesManager().saveCount("x", x);
-        canvas.drawText(coordinates, startX + 10, startY - 10, p);
-
-    }
-
-    public void seeArgument(final EditText editText, final PointView pView, final TextView textCoordinates, final String equation){
+    public void seeArgument(final EditText editText, final PointView pView, final TextView textCoordinates, final String equation) {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,19 +176,25 @@ public class BuildingSchedule {
             @Override
             public void afterTextChanged(Editable s) {
                 String argument = editText.getText().toString();
-                if (!argument.isEmpty() & !argument.endsWith(".")) {
+                if (!argument.isEmpty() & !argument.endsWith(".") & !argument.contains("-")) {
                     float x = Float.parseFloat(argument);
                     CustomApplication.getPreferencesManager().saveCount("x", x);
                     float y = PolishNotation.eval(equation, x);
                     String coordinates = "(" + x + ";" + y + ")";
                     textCoordinates.setText(coordinates);
                     pView.invalidate();
-
+                } else if (argument.contains("-") & !argument.endsWith("-")) {
+                    float x = Float.parseFloat(argument);
+                    CustomApplication.getPreferencesManager().saveCount("x", x);
+                    float y = PolishNotation.eval(equation, x);
+                    String coordinates = "(" + x + ";" + y + ")";
+                    textCoordinates.setText(coordinates);
+                    pView.invalidate();
                 }
-                }
-            });
-        }
+            }
+        });
     }
+}
 
 
 

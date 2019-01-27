@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ScheduleActivity">
 
+    <example.yuratoxa.schedule.GraphSurfaceView
+        android:id="@+id/graphSurfaceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="246dp" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -18,7 +25,7 @@
         app:layout_constraintEnd_toStartOf="@+id/editX" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/buttonMinus"
         style="@android:style/Widget.DeviceDefault.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,10 +35,10 @@
         android:textSize="60sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlus" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonPlus"
         style="@android:style/Widget.DeviceDefault.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="numberSigned|numberDecimal"
         android:maxLength="5"
@@ -70,59 +76,23 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView" />
 
-    <example.yuratoxa.schedule.ScheduleView
-        android:id="@+id/customView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-
     <example.yuratoxa.schedule.PointView
         android:id="@+id/pointView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="320dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:text="Y"
-        android:textColor="@color/colorViolet"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/editX"
-        app:layout_constraintEnd_toStartOf="@+id/editY" />
-
-    <EditText
-        android:id="@+id/editY"
-        android:layout_width="114dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="numberSigned|numberDecimal"
-        android:maxLength="5"
-        android:textColor="@color/colorViolet"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editX" />
-
-    <TextView
-        android:id="@+id/textY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:textColor="@color/colorViolet"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/editY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editY" />
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="46dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

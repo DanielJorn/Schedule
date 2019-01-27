@@ -12,16 +12,16 @@ public class PointView extends View {
     Paint p = new Paint();
     BuildingSchedule buildingSchedule = new BuildingSchedule();
 
-    public PointView(Context context)
-    {
+    public PointView(Context context) {
         super(context);
 
     }
-    public PointView(Context context, AttributeSet attrs)
-    {
+
+    public PointView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
     }
+
     public PointView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
